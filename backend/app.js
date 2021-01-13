@@ -35,8 +35,27 @@ app.post('/api/stuff', (req, res, next) => {
     .catch(error => res.status(400).json({ error }) );
 });
 
-app.use('/api/stuff', (req, res, next) => {
-    console.log(Test.find())
+app.put('/api/stuff/:id', (req, res, next) => {
+    Test.updateOne(
+        {
+            _id: req.body.id,
+        },
+        {
+            ...req.body,
+            _id: req.params.id
+        }
+    )
+    .then(test => res.status(200).json({ message: 'Object has been updated !' }))
+    .catch(error => res.status(404).json({ error }));
+});
+
+app.get('/api/stuff/:id', (req, res, next) => {
+    Test.findOne({ _id: req.params.id })
+      .then(test => res.status(200).json(test))
+      .catch(error => res.status(404).json({ error }));
+  });
+
+app.get('/api/stuff', (req, res, next) => {
     Test.find()
         .then( tests => res.status(200).json(tests) )
         .catch( error => res.status(400).json(error) );
@@ -45,4 +64,5 @@ app.use('/api/stuff', (req, res, next) => {
     
   });
 
+ 
 module.exports = app;
