@@ -36,11 +36,12 @@ app.post('/api/stuff', (req, res, next) => {
 });
 
 app.use('/api/stuff', (req, res, next) => {
+    console.log(Test.find())
     Test.find()
         .then( tests => res.status(200).json(tests) )
         .catch( error => res.status(400).json(error) );
 
-    res.status(200).json(stuff);
+    //res.status(200).json(Test);
     
   });
 
