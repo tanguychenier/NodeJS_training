@@ -2,6 +2,13 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://demo:demo@cluster0.vtpmi.mongodb.net/demo?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,6 +21,9 @@ app.use(bodyParser.json());
 
 app.post('/api/stuff', (req, res, next) => {
     console.log(req.body);
+    res.status(201).json({
+        message: "201"
+    });
 });
 
 app.use('/api/stuff', (req, res, next) => {
