@@ -29,7 +29,6 @@ exports.getAllTests = (req, res, next) => {
     Test.find()
         .then( tests => res.status(200).json(tests) )
         .catch( error => res.status(400).json(error) );
-    
 };
 
 exports.deleteTest = (req, res, next) => {
