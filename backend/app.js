@@ -4,6 +4,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+const Test = require('./models/TestModel');
+
 mongoose.connect('mongodb+srv://demo:demo@cluster0.vtpmi.mongodb.net/demo?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -20,10 +22,16 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.post('/api/stuff', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({
-        message: "201"
+
+    delete req.body._id;
+
+    const test = new Test({
+        ...req.body
     });
+
+    test.save()
+    .then(() => res.status(201).json({ message: 'Object has been registered !' }) )
+    .catch(error => res.status(400).json({ error }) );
 });
 
 app.use('/api/stuff', (req, res, next) => {
